@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scrollable PNG Images</title>
+    <style>
+        /* Reset default margin and padding for body */
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        /* Container to hold the images */
+        .image-container {
+            display: flex;
+            width: 100%;
+            height: 100vh;  /* Full viewport height */
+            overflow-x: scroll;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /* Each image will fill the screen without getting cut off */
+        .image-container img {
+            width: 100vw;  /* Full width of the viewport */
+            height: 100vh; /* Full height of the viewport */
+            object-fit: contain; /* Ensures the image is fully visible */
+            scroll-snap-align: center;
+        }
+
+        /* Hide the scrollbar */
+        .image-container::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="image-container">
+        <img src="Page 1.png" alt="Image 1">
+        <img src="Page 2.png" alt="Image 2">
+        <img src="Page 3.png" alt="Image 3">
+        <img src="Page 4.png" alt="Image 4">
+        <img src="Page 5.png" alt="Image 5">
+        <img src="Page 6.png" alt="Image 6">
+        <img src="Page 7.png" alt="Image 7">
+        <img src="Page 8.png" alt="Image 8">
+        <img src="Page 9.png" alt="Image 9">
+        <img src="Page 10.png" alt="Image 10">
+        <img src="Page 11.png" alt="Image 11">
+        <img src="Page 12.png" alt="Image 12">
+        <img src="Page 13.png" alt="Image 13">
+        <img src="Page 14.png" alt="Image 14">
+        <img src="Page 15.png" alt="Image 15">
+        <img src="Page 16.png" alt="Image 16">
+        <img src="Page 17.png" alt="Image 17">
+        <img src="Page 18.png" alt="Image 18">
+        <img src="Page 19.png" alt="Image 19">
+        <img src="Page 20.png" alt="Image 21">
+        <img src="Page 21.png" alt="Image 21">
+        <!-- Add more images as needed -->
+    </div>
+</body>
+</html>
