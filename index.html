@@ -134,6 +134,25 @@
                     });
                 }, 66); // Debounce time
             });
+
+            // Prevent default scroll behavior to stop at each image
+            imageContainer.addEventListener('wheel', (event) => {
+                event.preventDefault();
+                const scrollLeft = imageContainer.scrollLeft;
+                const viewportWidth = window.innerWidth;
+                const currentIndex = Math.round(scrollLeft / viewportWidth);
+                if (event.deltaY > 0) {
+                    imageContainer.scrollTo({
+                        left: (currentIndex + 1) * viewportWidth,
+                        behavior: 'smooth'
+                    });
+                } else {
+                    imageContainer.scrollTo({
+                        left: (currentIndex - 1) * viewportWidth,
+                        behavior: 'smooth'
+                    });
+                }
+            });
         }
 
         // Adjust on page load
