@@ -27,6 +27,7 @@
             overflow-x: scroll;
             scroll-snap-type: x mandatory;
             -webkit-overflow-scrolling: touch;
+            scroll-behavior: smooth; /* Ensure smooth scrolling */
         }
 
         /* Each image will fill the screen without getting cut off */
@@ -34,7 +35,7 @@
             width: 100vw;  /* Full width of the viewport */
             height: 100vh; /* Full height of the viewport */
             object-fit: cover; /* Ensures the image covers the screen area */
-            scroll-snap-align: center;
+            scroll-snap-align: center; /* Snap to the center of the viewport */
         }
 
         /* Hide the scrollbar */
@@ -118,21 +119,6 @@
                 const viewportWidth = window.innerWidth;
                 const currentIndex = Math.round(scrollLeft / viewportWidth);
                 setBackgroundColor(images[currentIndex]);
-            });
-
-            // Add scroll event listener to snap to the nearest image
-            let isScrolling;
-            imageContainer.addEventListener('scroll', () => {
-                window.clearTimeout(isScrolling);
-                isScrolling = setTimeout(() => {
-                    const scrollLeft = imageContainer.scrollLeft;
-                    const viewportWidth = window.innerWidth;
-                    const currentIndex = Math.round(scrollLeft / viewportWidth);
-                    imageContainer.scrollTo({
-                        left: currentIndex * viewportWidth,
-                        behavior: 'smooth'
-                    });
-                }, 66); // Debounce time
             });
 
             // Prevent default scroll behavior to stop at each image
