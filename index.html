@@ -57,7 +57,7 @@
     <div class="notch-space"></div> <!-- This div is for the notch space -->
 
     <div class="image-container">
-        <img src="Page 1.png" alt="Image 1">
+        <img src="Page 1.png" alt="Image 1" id="firstImage">
         <img src="Page 2.png" alt="Image 2">
         <img src="Page 3.png" alt="Image 3">
         <img src="Page 4.png" alt="Image 4">
@@ -87,7 +87,6 @@
             const viewportHeight = window.innerHeight; // Get the current viewport height
             const imageContainer = document.querySelector('.image-container');
             const images = document.querySelectorAll('.image-container img');
-            const firstImage = document.querySelector('#firstImage');
             const notchSpace = document.querySelector('.notch-space');
 
             // Apply the calculated height to both the container and images
@@ -96,23 +95,30 @@
                 image.style.height = `${viewportHeight}px`;
             });
 
-            // Set the body background color to the dominant color of the first image
-            const firstImageSrc = firstImage.src;
+            // Function to set the background color based on the current image
+            function setBackgroundColor(image) {
+                const img = new Image();
+                img.src = image.src;
+                img.onload = () => {
+                    const ctx = document.createElement('canvas').getContext('2d');
+                    ctx.drawImage(img, 0, 0, 1, 1);
+                    const pixel = ctx.getImageData(0, 0, 1, 1).data;
+                    const dominantColor = `rgb(${pixel[0]}, ${pixel[1]}, ${pixel[2]})`;
+                    document.body.style.backgroundColor = dominantColor;
+                    notchSpace.style.backgroundColor = dominantColor;
+                };
+            }
 
-            // Create an image object to get the dominant color of the first image
-            const img = new Image();
-            img.src = firstImageSrc;
-            img.onload = () => {
-                // Use the first pixel to approximate the dominant color
-                const ctx = document.createElement('canvas').getContext('2d');
-                ctx.drawImage(img, 0, 0, 1, 1);
-                const pixel = ctx.getImageData(0, 0, 1, 1).data;
-                const dominantColor = `rgb(${pixel[0]}, ${pixel[1]}, ${pixel[2]})`;
-                
-                // Set the background color of the body and notch space to match the first image's color
-                document.body.style.backgroundColor = dominantColor;
-                notchSpace.style.backgroundColor = dominantColor;
-            };
+            // Set initial background color
+            setBackgroundColor(images[0]);
+
+            // Add scroll event listener to change background color on scroll
+            imageContainer.addEventListener('scroll', () => {
+                const scrollLeft = imageContainer.scrollLeft;
+                const viewportWidth = window.innerWidth;
+                const currentIndex = Math.round(scrollLeft / viewportWidth);
+                setBackgroundColor(images[currentIndex]);
+            });
         }
 
         // Adjust on page load
