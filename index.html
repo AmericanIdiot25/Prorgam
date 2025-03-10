@@ -27,7 +27,8 @@
             overflow-x: scroll;
             scroll-snap-type: x mandatory;
             -webkit-overflow-scrolling: touch;
-            scroll-behavior: smooth; /* Ensure smooth scrolling */
+            scroll-behavior: smooth; /* Smooth scrolling */
+            height: 100vh; /* Full viewport height */
         }
 
         /* Each image will fill the screen without getting cut off */
@@ -77,9 +78,8 @@
         <img src="Page 17.png" alt="Image 17">
         <img src="Page 18.png" alt="Image 18">
         <img src="Page 19.png" alt="Image 19">
-        <img src="Page 20.png" alt="Image 21">
+        <img src="Page 20.png" alt="Image 20">
         <img src="Page 21.png" alt="Image 21">
-        <!-- Add more images as needed -->
     </div>
 
     <script>
@@ -121,23 +121,27 @@
                 setBackgroundColor(images[currentIndex]);
             });
 
-            // Prevent default scroll behavior to stop at each image
+            // Prevent fast scrolling and enforce snapping to each image
+            let isScrolling;
             imageContainer.addEventListener('wheel', (event) => {
                 event.preventDefault();
+
+                if (isScrolling) return;
+
                 const scrollLeft = imageContainer.scrollLeft;
                 const viewportWidth = window.innerWidth;
                 const currentIndex = Math.round(scrollLeft / viewportWidth);
-                if (event.deltaY > 0) {
-                    imageContainer.scrollTo({
-                        left: (currentIndex + 1) * viewportWidth,
-                        behavior: 'smooth'
-                    });
-                } else {
-                    imageContainer.scrollTo({
-                        left: (currentIndex - 1) * viewportWidth,
-                        behavior: 'smooth'
-                    });
-                }
+                const nextIndex = event.deltaY > 0 ? currentIndex + 1 : currentIndex - 1;
+
+                isScrolling = true;
+                imageContainer.scrollTo({
+                    left: nextIndex * viewportWidth,
+                    behavior: 'smooth'
+                });
+
+                setTimeout(() => {
+                    isScrolling = false;
+                }, 500); // Add a delay to prevent quick scrolling
             });
         }
 
