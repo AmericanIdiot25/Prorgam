@@ -119,6 +119,21 @@
                 const currentIndex = Math.round(scrollLeft / viewportWidth);
                 setBackgroundColor(images[currentIndex]);
             });
+
+            // Add scroll event listener to snap to the nearest image
+            let isScrolling;
+            imageContainer.addEventListener('scroll', () => {
+                window.clearTimeout(isScrolling);
+                isScrolling = setTimeout(() => {
+                    const scrollLeft = imageContainer.scrollLeft;
+                    const viewportWidth = window.innerWidth;
+                    const currentIndex = Math.round(scrollLeft / viewportWidth);
+                    imageContainer.scrollTo({
+                        left: currentIndex * viewportWidth,
+                        behavior: 'smooth'
+                    });
+                }, 66); // Debounce time
+            });
         }
 
         // Adjust on page load
