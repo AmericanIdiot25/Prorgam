@@ -25,10 +25,10 @@
             display: flex;
             width: 100%;
             overflow-x: scroll;
-            scroll-snap-type: x mandatory;
             -webkit-overflow-scrolling: touch;
             scroll-behavior: smooth; /* Smooth scrolling */
             height: 100vh; /* Full viewport height */
+            scroll-snap-type: none; /* Disable snapping initially */
         }
 
         /* Each image will fill the screen without getting cut off */
@@ -113,35 +113,34 @@
             // Set initial background color
             setBackgroundColor(images[0]);
 
-            // Add scroll event listener to change background color on scroll
-            imageContainer.addEventListener('scroll', () => {
-                const scrollLeft = imageContainer.scrollLeft;
-                const viewportWidth = window.innerWidth;
-                const currentIndex = Math.round(scrollLeft / viewportWidth);
-                setBackgroundColor(images[currentIndex]);
-            });
+            // Variables to prevent rapid scrolling
+            let scrollTimeout;
+            let isScrolling = false;
 
-            // Prevent fast scrolling and enforce snapping to each image
-            let isScrolling;
+            // Add wheel event listener to scroll and control behavior
             imageContainer.addEventListener('wheel', (event) => {
                 event.preventDefault();
 
-                if (isScrolling) return;
-
-                const scrollLeft = imageContainer.scrollLeft;
-                const viewportWidth = window.innerWidth;
-                const currentIndex = Math.round(scrollLeft / viewportWidth);
-                const nextIndex = event.deltaY > 0 ? currentIndex + 1 : currentIndex - 1;
+                if (isScrolling) return; // Prevent scrolling too fast
 
                 isScrolling = true;
+
+                const viewportWidth = window.innerWidth;
+                const scrollLeft = imageContainer.scrollLeft;
+                const currentIndex = Math.round(scrollLeft / viewportWidth);
+
+                // Determine if we're scrolling up or down
+                const nextIndex = event.deltaY > 0 ? currentIndex + 1 : currentIndex - 1;
                 imageContainer.scrollTo({
                     left: nextIndex * viewportWidth,
                     behavior: 'smooth'
                 });
 
-                setTimeout(() => {
+                // Reset scroll behavior after a delay to prevent skipping
+                clearTimeout(scrollTimeout);
+                scrollTimeout = setTimeout(() => {
                     isScrolling = false;
-                }, 500); // Add a delay to prevent quick scrolling
+                }, 500); // Add a delay to prevent fast scrolling
             });
         }
 
