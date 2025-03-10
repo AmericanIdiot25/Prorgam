@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Theatre Program</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #111;
+            color: white;
+            text-align: center;
+        }
+        .scroll-container {
+            display: flex;
+            overflow-x: auto;
+            white-space: nowrap;
+            scroll-behavior: smooth;
+            padding: 20px 0;
+        }
+        .scroll-container img {
+            height: 80vh; /* Adjust based on preference */
+            margin: 0 10px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(255, 255, 255, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <h1>Welcome to the Digital Theatre Program</h1>
+    <div class="scroll-container">
+        <img src="Page 1.png" alt="Page 1">
+        <img src="Page 2.png" alt="Page 2">
+        <img src="Page 3.png" alt="Page 3">
+        <img src="Page 4.png" alt="Page 4">
+        <img src="Page 5.png" alt="Page 5">
+        <img src="Page 6.png" alt="Page 6">
+        <img src="Page 7.png" alt="Page 7">
+        <img src="Page 8.png" alt="Page 8">
+        <img src="Page 9.png" alt="Page 9">
+        <img src="Page 10.png" alt="Page 10">
+        <img src="Page 11.png" alt="Page 11">
+        <img src="Page 12.png" alt="Page 12">
+        <img src="Page 13.png" alt="Page 13">
+        <img src="Page 14.png" alt="Page 14">
+        <img src="Page 15.png" alt="Page 15">
+        <img src="Page 16.png" alt="Page 16">
+        <img src="Page 17.png" alt="Page 17">
+        <img src="Page 18.png" alt="Page 18">
+        <img src="Page 19.png" alt="Page 19">
+        <img src="Page 20.png" alt="Page 20">
+        <img src="Page 21.png" alt="Page 21">
+    </div>
+    <button onclick="scrollLeft()">⬅️</button>
+<button onclick="scrollRight()">➡️</button>
+
+<script>
+    function scrollLeft() {
+        document.querySelector('.scroll-container').scrollBy({ left: -window.innerWidth, behavior: 'smooth' });
+    }
+    function scrollRight() {
+        document.querySelector('.scroll-container').scrollBy({ left: window.innerWidth, behavior: 'smooth' });
+    }
+</script>
+
+</body>
+</html>
