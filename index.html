@@ -25,10 +25,9 @@
             display: flex;
             width: 100%;
             overflow-x: scroll;
-            -webkit-overflow-scrolling: touch;
-            scroll-behavior: smooth; /* Smooth scrolling */
             height: 100vh; /* Full viewport height */
-            scroll-snap-type: none; /* Disable snapping initially */
+            scroll-snap-type: x mandatory; /* Enforce snap-to behavior */
+            -webkit-overflow-scrolling: touch;
         }
 
         /* Each image will fill the screen without getting cut off */
@@ -36,7 +35,7 @@
             width: 100vw;  /* Full width of the viewport */
             height: 100vh; /* Full height of the viewport */
             object-fit: cover; /* Ensures the image covers the screen area */
-            scroll-snap-align: center; /* Snap to the center of the viewport */
+            scroll-snap-align: start; /* Make sure each image snaps to the start */
         }
 
         /* Hide the scrollbar */
@@ -114,7 +113,6 @@
             setBackgroundColor(images[0]);
 
             // Variables to prevent rapid scrolling
-            let scrollTimeout;
             let isScrolling = false;
 
             // Add wheel event listener to scroll and control behavior
@@ -133,12 +131,11 @@
                 const nextIndex = event.deltaY > 0 ? currentIndex + 1 : currentIndex - 1;
                 imageContainer.scrollTo({
                     left: nextIndex * viewportWidth,
-                    behavior: 'smooth'
+                    behavior: 'auto' // No smooth scrolling, rigid behavior
                 });
 
                 // Reset scroll behavior after a delay to prevent skipping
-                clearTimeout(scrollTimeout);
-                scrollTimeout = setTimeout(() => {
+                setTimeout(() => {
                     isScrolling = false;
                 }, 500); // Add a delay to prevent fast scrolling
             });
