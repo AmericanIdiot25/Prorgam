@@ -24,10 +24,10 @@
         .image-container {
             display: flex;
             width: 100%;
-            overflow-x: scroll;
-            height: 100vh; /* Full viewport height */
-            scroll-snap-type: x mandatory; /* Enforce snap-to behavior */
+            overflow-x: hidden; /* Hide overflow to prevent scrolling past images */
+            scroll-snap-type: x mandatory;
             -webkit-overflow-scrolling: touch;
+            scroll-behavior: smooth; /* Ensure smooth scrolling */
         }
 
         /* Each image will fill the screen without getting cut off */
@@ -35,7 +35,7 @@
             width: 100vw;  /* Full width of the viewport */
             height: 100vh; /* Full height of the viewport */
             object-fit: cover; /* Ensures the image covers the screen area */
-            scroll-snap-align: start; /* Make sure each image snaps to the start */
+            scroll-snap-align: center; /* Snap to the center of the viewport */
         }
 
         /* Hide the scrollbar */
@@ -77,8 +77,9 @@
         <img src="Page 17.png" alt="Image 17">
         <img src="Page 18.png" alt="Image 18">
         <img src="Page 19.png" alt="Image 19">
-        <img src="Page 20.png" alt="Image 20">
+        <img src="Page 20.png" alt="Image 21">
         <img src="Page 21.png" alt="Image 21">
+        <!-- Add more images as needed -->
     </div>
 
     <script>
@@ -112,32 +113,57 @@
             // Set initial background color
             setBackgroundColor(images[0]);
 
-            // Variables to prevent rapid scrolling
-            let isScrolling = false;
+            // Add scroll event listener to change background color on scroll
+            imageContainer.addEventListener('scroll', () => {
+                const scrollLeft = imageContainer.scrollLeft;
+                const viewportWidth = window.innerWidth;
+                const currentIndex = Math.round(scrollLeft / viewportWidth);
+                setBackgroundColor(images[currentIndex]);
+            });
 
-            // Add wheel event listener to scroll and control behavior
+            // Prevent default scroll behavior to stop at each image
             imageContainer.addEventListener('wheel', (event) => {
                 event.preventDefault();
-
-                if (isScrolling) return; // Prevent scrolling too fast
-
-                isScrolling = true;
-
-                const viewportWidth = window.innerWidth;
                 const scrollLeft = imageContainer.scrollLeft;
+                const viewportWidth = window.innerWidth;
                 const currentIndex = Math.round(scrollLeft / viewportWidth);
+                if (event.deltaY > 0) {
+                    imageContainer.scrollTo({
+                        left: (currentIndex + 1) * viewportWidth,
+                        behavior: 'smooth'
+                    });
+                } else {
+                    imageContainer.scrollTo({
+                        left: (currentIndex - 1) * viewportWidth,
+                        behavior: 'smooth'
+                    });
+                }
+            });
 
-                // Determine if we're scrolling up or down
-                const nextIndex = event.deltaY > 0 ? currentIndex + 1 : currentIndex - 1;
-                imageContainer.scrollTo({
-                    left: nextIndex * viewportWidth,
-                    behavior: 'auto' // No smooth scrolling, rigid behavior
-                });
+            // Add touch event listeners for mobile devices
+            let touchStartX = 0;
+            let touchEndX = 0;
 
-                // Reset scroll behavior after a delay to prevent skipping
-                setTimeout(() => {
-                    isScrolling = false;
-                }, 500); // Add a delay to prevent fast scrolling
+            imageContainer.addEventListener('touchstart', (event) => {
+                touchStartX = event.changedTouches[0].screenX;
+            });
+
+            imageContainer.addEventListener('touchend', (event) => {
+                touchEndX = event.changedTouches[0].screenX;
+                const scrollLeft = imageContainer.scrollLeft;
+                const viewportWidth = window.innerWidth;
+                const currentIndex = Math.round(scrollLeft / viewportWidth);
+                if (touchStartX > touchEndX) {
+                    imageContainer.scrollTo({
+                        left: (currentIndex + 1) * viewportWidth,
+                        behavior: 'smooth'
+                    });
+                } else {
+                    imageContainer.scrollTo({
+                        left: (currentIndex - 1) * viewportWidth,
+                        behavior: 'smooth'
+                    });
+                }
             });
         }
 
