@@ -11,24 +11,26 @@
             background-color: #111;
             color: white;
             text-align: center;
+            overflow: hidden;
         }
         .scroll-container {
             display: flex;
             overflow-x: auto;
+            scroll-snap-type: x mandatory;
             white-space: nowrap;
+            width: 100vw;
+            height: 100vh;
             scroll-behavior: smooth;
-            padding: 20px 0;
         }
         .scroll-container img {
-            height: 80vh; /* Adjust based on preference */
-            margin: 0 10px;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(255, 255, 255, 0.2);
+            flex: 0 0 100vw;
+            height: 100vh;
+            object-fit: cover;
+            scroll-snap-align: start;
         }
     </style>
 </head>
 <body>
-    <h1>Welcome to the Digital Theatre Program</h1>
     <div class="scroll-container">
         <img src="Page 1.png" alt="Page 1">
         <img src="Page 2.png" alt="Page 2">
